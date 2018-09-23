@@ -18,23 +18,46 @@ main = do
 	let	_ttl = read ttl :: Float
 	let	_l = read l :: Float
 	let	_qwe = read qwe :: Int
-	let h = _l / _qwe
+	let h = _l / fromIntegral (_qwe - 1)
 	let	start = replicate _qwe _tx0
-	let result = make_shit 10 _qwe _tx0 _ttl start
-
-	let make_shit count start = eval_p : make_shit (count - 1) eval_p
-		where
-		eval_p = myMap tf $ replicate (length start) 0.0 
-			where
-			tf e c
-				| c == 0 = _tt0
-				| c == length start = _ttl
-				| otherwise = ((start !! (c-1)) - 2*(start !! c) + start !! (c+1)) / h^2
-
-	
+	-- let make_shit 0 starts = eval_p
+	--     make_shit count starts = eval_p : make_shit (count - 1) eval_p
+	-- 	where
+	-- 	eval_p = myMap tf $ replicate (length starts) 0
+	-- 		where
+	-- 		tf e c
+	-- 			| c == 0 = _tt0
+	-- 			| c == length starts = _ttl
+	-- 			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
 	print start
-
+	let result = make_shit 10 start [_tt0,_ttl,h,_tx0]
+	
+	pretty_print result
+	putStrLn "132"
 
 
 myMap :: (a->Int->a)->[a]->Int->[a]
+myMap fun [x] count = [fun x count]
 myMap fun (x:xs) count = fun x count:myMap fun xs (count + 1) 	
+
+
+pretty_print arg = mapM_ print arg
+
+eval_p::[Float]->[Float]->[Float]
+eval_p starts args = myMap tf (replicate (length starts) 0.0) 0
+	where
+		[tt0,ttl,h,_] = args
+		tf e c
+			| c == 0 = tt0
+			| c == (length starts) - 1  = ttl
+			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
+						
+eval_f len tx0 = replicate len tx0
+
+make_shit:: Int->[Float]->[Float]->[[Float]]
+make_shit count starts args
+	|count == 0 = [eval_p  starts args]
+	|otherwise = (eval_p  starts args):( make_shit (count - 1) (eval_p  starts args) args)
+		where
+			[tt0,ttl,h,tx0] = args
+			
