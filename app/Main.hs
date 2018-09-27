@@ -4,8 +4,8 @@ main :: IO ()
 main = do
 	putStrLn "Длина стержня"
 	l <- getLine
-	putStrLn "Температура начальная"
-	tx0 <- getLine
+	--putStrLn "Температура начальная"
+	--tx0 <- getLine
 	putStrLn "Температура нагретой стороны"
 	tt0 <- getLine
 	putStrLn "Температура среды"
@@ -13,12 +13,12 @@ main = do
 	putStrLn "Кол-во разбиений"
 	qwe <- getLine
 	
-	let _tx0 = read tx0 :: Float
+	let _tx0 = 0-- read tx0 :: Float
 	let	_tt0 = read tt0 :: Float
 	let	_ttl = read ttl :: Float
 	let	_l = read l :: Float
 	let	_qwe = read qwe :: Int
-	let h = _l / fromIntegral (_qwe - 1)
+	let h = _l / fromIntegral (_qwe - 1)	
 	let	start = replicate _qwe _tx0
 	-- let make_shit 0 starts = eval_p
 	--     make_shit count starts = eval_p : make_shit (count - 1) eval_p
@@ -30,7 +30,7 @@ main = do
 	-- 			| c == length starts = _ttl
 	-- 			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
 	print start
-	let result = make_shit 10 start [_tt0,_ttl,h,_tx0]
+	let result = make_shit 50 start [_tt0,_ttl,h,_tx0]
 	
 	pretty_print result
 	putStrLn "132"
