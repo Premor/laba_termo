@@ -1,4 +1,5 @@
 module Main where
+import qualified Data.Map.Lazy as Map
 
 main :: IO ()
 main = do
@@ -12,8 +13,9 @@ main = do
 	ttl <- getLine
 	putStrLn "Кол-во разбиений"
 	qwe <- getLine
-	
-	let _tx0 = 0-- read tx0 :: Float
+	let test k a = a+k 
+	print $ Map.mapWithKey test $ Map.fromList [(0,1),(1,1),(2,2)]
+	let _tx0 = 100-- read tx0 :: Float
 	let	_tt0 = read tt0 :: Float
 	let	_ttl = read ttl :: Float
 	let	_l = read l :: Float
@@ -44,13 +46,14 @@ myMap fun (x:xs) count = fun x count:myMap fun xs (count + 1)
 pretty_print arg = mapM_ print arg
 
 eval_p::[Float]->[Float]->[Float]
-eval_p starts args = myMap tf (replicate (length starts) 0.0) 0
+eval_p starts args = Map.elems $ Map.mapWithKey tf starts_new
 	where
+		starts_new = Map.fromList $ zip [0..] starts
 		[tt0,ttl,h,_] = args
-		tf e c
-			| c == 0 = tt0
-			| c == (length starts) - 1  = ttl
-			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
+		tf k e
+			| k == 0 = tt0
+			| k == (length starts) - 1  = ttl
+			| otherwise = e + ((starts_new Map.! (k-1)) - 2*(starts_new Map.! k) + (starts_new Map.! (k+1))) / h^2
 						
 eval_f len tx0 = replicate len tx0
 
