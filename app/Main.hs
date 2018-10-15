@@ -4,8 +4,8 @@ main :: IO ()
 main = do
 	putStrLn "Длина стержня"
 	l <- getLine
-	--putStrLn "Температура начальная"
-	--tx0 <- getLine
+	putStrLn "Температура начальная"
+	tx0 <- getLine
 	putStrLn "Температура нагретой стороны"
 	tt0 <- getLine
 	putStrLn "Температура среды"
@@ -13,18 +13,19 @@ main = do
 	putStrLn "Кол-во разбиений"
 	qwe <- getLine
 	
-	let _tx0 = 0-- read tx0 :: Float
+	let _tx0 = read tx0 :: Float
 	let	_tt0 = read tt0 :: Float
 	let	_ttl = read ttl :: Float
 	let	_l = read l :: Float
 	let	_qwe = read qwe :: Int
-	let h = _l / fromIntegral (_qwe - 1)	
+	let h = _l / fromIntegral _qwe	
 	let	start = replicate _qwe _tx0
 	-- let make_shit 0 starts = eval_p
 	--     make_shit count starts = eval_p : make_shit (count - 1) eval_p
 	-- 	where
 	-- 	eval_p = myMap tf $ replicate (length starts) 0
-	-- 		where
+	-- 
+			where
 	-- 		tf e c
 	-- 			| c == 0 = _tt0
 	-- 			| c == length starts = _ttl
@@ -33,7 +34,7 @@ main = do
 	let result = make_shit 50 start [_tt0,_ttl,h,_tx0]
 	
 	pretty_print result
-	putStrLn "132"
+	-- putStrLn "132"
 
 
 myMap :: (a->Int->a)->[a]->Int->[a]
@@ -50,14 +51,14 @@ eval_p starts args = myMap tf (replicate (length starts) 0.0) 0
 		tf e c
 			| c == 0 = tt0
 			| c == (length starts) - 1  = ttl
-			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
+			| otherwise = starts !! c + ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2 
 						
 eval_f len tx0 = replicate len tx0
 
 make_shit:: Int->[Float]->[Float]->[[Float]]
 make_shit count starts args
 	|count == 0 = [eval_p  starts args]
-	|otherwise = (eval_p  starts args):( make_shit (count - 1) (eval_p  starts args) args)
+	|otherwise =  (eval_p  starts args):( make_shit (count - 1) (eval_p  starts args) args)
 		where
 			[tt0,ttl,h,tx0] = args
 			
