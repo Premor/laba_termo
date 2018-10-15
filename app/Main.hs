@@ -36,7 +36,7 @@ main = do
 	-- 			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
 	print start
 	let result = make_shit 1000 start [_tt0,_ttl,h,_tx0]
-	writeFile "./result.txt" $ to_csv "" result
+	writeFile "./result.csv" $ to_csv "" result
 	pretty_print result
 	
 	-- putStrLn "132"
