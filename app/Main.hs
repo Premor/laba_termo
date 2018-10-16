@@ -16,31 +16,20 @@ main = do
 	ttl <- getLine
 	putStrLn "Кол-во разбиений"
 	qwe <- getLine
-	
+	putStrLn "Кол-во итераций (по времени)"
+	time <- getLine
+
 	let _tx0 = read tx0 :: Float
 	let	_tt0 = read tt0 :: Float
 	let	_ttl = read ttl :: Float
 	let	_l = read l :: Float
 	let	_qwe = read qwe :: Int
+	let _time = read time :: Int
 	let h = _l / fromIntegral _qwe	
 	let	start = replicate _qwe _tx0
-	-- let make_shit 0 starts = eval_p
-	--     make_shit count starts = eval_p : make_shit (count - 1) eval_p
-	-- 	where
-	-- 	eval_p = myMap tf $ replicate (length starts) 0
-	-- 
-			where
-	-- 		tf e c
-	-- 			| c == 0 = _tt0
-	-- 			| c == length starts = _ttl
-	-- 			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
-	print start
-	let result = make_shit 5000 start [_tt0,_ttl,h,_tx0]
+	let result = make_shit _time start [_tt0,_ttl,h,_tx0]
 	writeFile "./result.csv" $ to_csv "" result
-	-- pretty_print result
 	
-	-- putStrLn "132"
-
 
 
 to_csv = foldr outer
