@@ -35,9 +35,9 @@ main = do
 	-- 			| c == length starts = _ttl
 	-- 			| otherwise = ((starts !! (c-1)) - 2*(starts !! c) + (starts !! (c+1))) / h^2
 	print start
-	let result = make_shit 1000 start [_tt0,_ttl,h,_tx0]
+	let result = make_shit 5000 start [_tt0,_ttl,h,_tx0]
 	writeFile "./result.csv" $ to_csv "" result
-	pretty_print result
+	-- pretty_print result
 	
 	-- putStrLn "132"
 
